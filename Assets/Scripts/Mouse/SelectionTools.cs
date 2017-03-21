@@ -22,7 +22,7 @@ public class SelectionTools : MonoBehaviour
     {
         m_rectTransform = GetComponent<RectTransform>();
         m_RTSCamera = FindObjectOfType<RTSCamera>();
-        m_layerMask = 1 << LayerMask.NameToLayer("Unite");
+        m_layerMask = 1 << LayerMask.NameToLayer("Selectable");
     }
     void Update()
     {
@@ -79,7 +79,24 @@ public class SelectionTools : MonoBehaviour
             rectTransform.sizeDelta = sizeDelta;
             yield return true;
         }
-        Select(GetSelectables(rectTransform).ToArray());
+        IEnumerable<Selectable> selectables = GetSelectables(rectTransform).ToArray();
+        Selectable[] unites = (from selectable in selectables where selectable.GetComponent<Unite>() != null select selectable).ToArray();
+        Selectable[] buildings = (from selectable in selectables where selectable.GetComponent<Building>() != null select selectable).ToArray();
+        if(unites.Length == 0)
+        {
+            if(buildings.Length != 0)
+            {
+                Select(new Selectable[] { buildings[0] });
+            }
+            else
+            {
+                Select(new Selectable[0]);
+            }
+        }
+        else
+        {
+            Select(unites);
+        }
         Destroy(selectionTools);
         m_RTSCamera.RotationLocked = false;
         m_RTSCamera.DisplacementLocked = false;
