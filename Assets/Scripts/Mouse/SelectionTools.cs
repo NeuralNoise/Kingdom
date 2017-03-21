@@ -90,7 +90,7 @@ public class SelectionTools : MonoBehaviour
             }
             else
             {
-                Select(new Selectable[0]);
+                Select(new Selectable[0] { });
             }
         }
         else
@@ -109,9 +109,14 @@ public class SelectionTools : MonoBehaviour
         if(selectable)
         {
             Unite unite = CastRay(Input.mousePosition).GetComponent<Unite>();
+            Building building = CastRay(Input.mousePosition).GetComponent<Building>();
             if (unite)
             {
-                itemsToSelect = from item in selectables where item.GetComponent<Unite>().Type == unite.Type select item;
+                itemsToSelect = from item in selectables where (item.GetComponent<Unite>() != null && item.GetComponent<Unite>().Type == unite.Type) select item;
+            }
+            else if(building)
+            {
+                itemsToSelect = from item in selectables where (item.GetComponent<Building>() != null && item.GetComponent<Building>().Type == building.Type) select item;
             }
         }
         Select(itemsToSelect.ToArray());
