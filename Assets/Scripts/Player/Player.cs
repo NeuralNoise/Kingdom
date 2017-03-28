@@ -6,8 +6,7 @@ public class Player
 {
     public string Name { get; set; }
     public Color Color { get; set; }
-    public Unite[] Unites { get; set; }
-    public Building[] Buildings { get; set; }
+    public Entity[] Entities { get; set; }
     public RaceEnum Race { get; set; }
     public int Gold { get; set; }
     public int Wood { get; set; }

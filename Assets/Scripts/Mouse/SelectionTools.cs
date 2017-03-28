@@ -80,8 +80,8 @@ public class SelectionTools : MonoBehaviour
             yield return true;
         }
         IEnumerable<Selectable> selectables = GetSelectables(rectTransform).ToArray();
-        Selectable[] unites = (from selectable in selectables where selectable.GetComponent<Unite>() != null select selectable).ToArray();
-        Selectable[] buildings = (from selectable in selectables where selectable.GetComponent<Building>() != null select selectable).ToArray();
+        Selectable[] unites = (from selectable in selectables where (selectable.GetComponent<Entity>() && selectable.GetComponent<Entity>().Type == Entity.TypeEnum.Unite) select selectable).ToArray();
+        Selectable[] buildings = (from selectable in selectables where (selectable.GetComponent<Entity>() && selectable.GetComponent<Entity>().Type == Entity.TypeEnum.Building) select selectable).ToArray();
         if(unites.Length == 0)
         {
             if(buildings.Length != 0)
@@ -103,23 +103,16 @@ public class SelectionTools : MonoBehaviour
     }
     void SelectByDoubleClick()
     {
-        IEnumerable<Selectable> selectables = GetSelectables(m_rectTransform);
-        IEnumerable<Selectable> itemsToSelect = new List<Selectable>();
         Selectable selectable = CastRay(Input.mousePosition);
-        if(selectable)
+        if (selectable)
         {
-            Unite unite = CastRay(Input.mousePosition).GetComponent<Unite>();
-            Building building = CastRay(Input.mousePosition).GetComponent<Building>();
-            if (unite)
+            Entity entity = selectable.GetComponent<Entity>();
+            if (entity)
             {
-                itemsToSelect = from item in selectables where (item.GetComponent<Unite>() != null && item.GetComponent<Unite>().Type == unite.Type) select item;
-            }
-            else if(building)
-            {
-                itemsToSelect = from item in selectables where (item.GetComponent<Building>() != null && item.GetComponent<Building>().Type == building.Type) select item;
+                IEnumerable<Selectable> selectables = GetSelectables(m_rectTransform);
+                Select(from item in selectables where entity.IsSameEntity(item.GetComponent<Entity>()) select item);
             }
         }
-        Select(itemsToSelect.ToArray());
     }
     #endregion
     #region Selection Tools
@@ -146,7 +139,7 @@ public class SelectionTools : MonoBehaviour
         }
         return selectable;
     }
-    void Select(Selectable[] selectables)
+    void Select(IEnumerable<Selectable> selectables)
     {
         IEnumerable<Selectable> itemsToDeselect = from item in m_uniteSelected where !selectables.Contains(item) select item;
         foreach (var item in itemsToDeselect) item.Deselect();
