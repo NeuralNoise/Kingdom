@@ -9,10 +9,10 @@ public class SelectionTools : MonoBehaviour
     public GameObject m_selectionPrefab;
     public float m_raycastMaxDistance = 100.0f;
 
+    SelectionManager m_selectionManager;
     RectTransform m_rectTransform;
     LayerMask m_layerMask;
     RTSCamera m_RTSCamera;
-    List<Selectable> m_uniteSelected = new List<Selectable>();
     bool m_waitingForSecondClick;
     #endregion
 
@@ -20,6 +20,7 @@ public class SelectionTools : MonoBehaviour
     #region Unity
     void Awake()
     {
+        m_selectionManager = FindObjectOfType<SelectionManager>();
         m_rectTransform = GetComponent<RectTransform>();
         m_RTSCamera = FindObjectOfType<RTSCamera>();
         m_layerMask = 1 << LayerMask.NameToLayer("Selectable");
@@ -141,16 +142,11 @@ public class SelectionTools : MonoBehaviour
     }
     void Select(IEnumerable<Selectable> selectables)
     {
-        IEnumerable<Selectable> itemsToDeselect = from item in m_uniteSelected where !selectables.Contains(item) select item;
-        foreach (var item in itemsToDeselect) item.Deselect();
-        m_uniteSelected.RemoveAll((item) => itemsToDeselect.Contains(item));
+        List<Selectable> itemsToDeselect = (from item in m_selectionManager.ObjectSelected where !selectables.Contains(item) select item).ToList();
+        m_selectionManager.Remove(itemsToDeselect);
 
-        IEnumerable<Selectable> itemsToSelect = from item in selectables where !m_uniteSelected.Contains(item) select item;
-        foreach (var item in itemsToSelect)
-        {
-            m_uniteSelected.Add(item);
-            item.Select();
-        }
+        List<Selectable> itemsToSelect = (from item in selectables where !m_selectionManager.ObjectSelected.Contains(item) select item).ToList();
+        m_selectionManager.Add(itemsToSelect);
     }
     IEnumerator c_WaitForSecondClick()
     {

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c4aaaa73daa877340b38fef526ef2d6f
-timeCreated: 1489133492
+timeCreated: 1491431774
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -36,14 +36,14 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 512
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   maxTextureSizeSet: 0
@@ -69,7 +69,44 @@ TextureImporter:
   spriteSheet:
     serializedVersion: 2
     sprites: []
-    outline: []
+    outline:
+    - - {x: 256, y: -72}
+      - {x: 256, y: 71}
+      - {x: 250, y: 104}
+      - {x: 178, y: 203}
+      - {x: 141, y: 231}
+      - {x: 66, y: 256}
+      - {x: -72, y: 256}
+      - {x: -154, y: 222}
+      - {x: -218, y: 151}
+      - {x: -253, y: 91}
+      - {x: -256, y: 62}
+      - {x: -256, y: -66}
+      - {x: -247, y: -102}
+      - {x: -198, y: -173}
+      - {x: -151, y: -214}
+      - {x: -74, y: -256}
+      - {x: 74, y: -256}
+      - {x: 159, y: -214}
+      - {x: 198, y: -173}
+      - {x: 246, y: -102}
+    - - {x: -28, y: -221}
+      - {x: -79, y: -205}
+      - {x: -136, y: -171}
+      - {x: -175, y: -130}
+      - {x: -210, y: -69}
+      - {x: -211, y: 66}
+      - {x: -169, y: 143}
+      - {x: -69, y: 210}
+      - {x: -5, y: 222}
+      - {x: 36, y: 219}
+      - {x: 115, y: 189}
+      - {x: 159, y: 151}
+      - {x: 219, y: 21}
+      - {x: 221, y: -28}
+      - {x: 203, y: -87}
+      - {x: 153, y: -158}
+      - {x: 63, y: -214}
   spritePackingTag: 
   userData: 
   assetBundleName: 

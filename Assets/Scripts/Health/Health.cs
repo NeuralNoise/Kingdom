@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
-public class Health : MonoBehaviour, IDamageable, IHealable
+public class Health : MonoBehaviour, IDamageable, IHealable, IDisplayableByBar
 {
     [SerializeField]
     private int maxHP;
@@ -21,7 +19,22 @@ public class Health : MonoBehaviour, IDamageable, IHealable
     public int CurrentHP
     {
         get { return currentHP; }
-        private set { currentHP = Mathf.Clamp(value, 0, MaxHP); }
+        private set
+        {
+            currentHP = Mathf.Clamp(value, 0, MaxHP);
+            OnChangePercentage.Invoke((float)CurrentHP * 100 / MaxHP);
+        }
+    }
+
+    [SerializeField, Candlelight.PropertyBackingField]
+    private OnChangePercentageEvent m_OnChangePercentage = new OnChangePercentageEvent();
+    public OnChangePercentageEvent OnChangePercentage
+    {
+        get
+        {
+            return m_OnChangePercentage;
+        }
+        set { m_OnChangePercentage = value; }
     }
 
     public void TakeDamage(int amount)
